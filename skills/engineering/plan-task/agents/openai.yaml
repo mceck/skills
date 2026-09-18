@@ -1,0 +1,5 @@
+interface:
+  display_name: "Plan Task"
+  short_description: "Create a new task"
+policy:
+  allow_implicit_invocation: false
