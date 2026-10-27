@@ -23,6 +23,8 @@ Check with the user that these seams match their expectations.
 
 5. Call the Skill tool with "write-spec" to bring the affected specs in line with the behaviour and decisions in the task, and link them in the task's Specs section. Lasting knowledge (behaviour, rules, architecture, decisions) belongs in the specs; the task keeps what matters to deliver this piece of work.
 
+6. Once the task and specs are written, ask the user whether to start the implementation now with the "implement" skill. Do not start it until they say yes.
+
 ## Status
 
 The `status` in the frontmatter is one of:
