@@ -1,6 +1,6 @@
 ---
 name: init-workflow
-description: Set up a repository for the spec/task workflow, creating docs/specs, docs/tasks, docs/manual, docs/CONTEXT.md and the agent instructions. On an existing project, derives the specs and glossary from the code.
+description: Set up a repository for the spec/task workflow, creating docs/specs, docs/tasks, docs/manual, docs/CONTEXT.md and the agent instructions. On an existing project, derives the specs, the matching done tasks and the glossary from the code.
 disable-model-invocation: true
 ---
 
@@ -80,7 +80,7 @@ On an existing project, look at what the survey found.
 **Specs in a different format** (another folder, per-feature documents, ADRs, design docs). Show the user what you found and ask whether to rewrite them in the `write-spec` format. If they agree:
 
 - Rewrite them into area specs in `docs/specs/`, merging documents that cover the same area and carrying over every piece of lasting information.
-- Per-feature documents with user stories or acceptance criteria are tasks in disguise: fold their lasting content (behaviour, rules, decisions) into the area specs.
+- Per-feature documents with user stories or acceptance criteria are tasks in disguise: fold their lasting content (behaviour, rules, decisions) into the area specs, and rewrite them as done tasks in step 6.
 - Fold each ADR into the Decisions section of the spec it concerns.
 - Check the rewritten specs against the code, and report where they disagree.
 - Ask the user before deleting the originals.
@@ -89,15 +89,25 @@ If they decline, leave the existing documents as they are; new specs go to `docs
 
 **Specs already in `docs/specs/` in this format.** Leave them as they are, and report any disagreement with the code you notice along the way.
 
-## 6. Manual
+## 6. Tasks
 
-The manual comes after the specs, since it is written from them.
+On an existing project, the specs describe work that is already built, so record it as tasks too. This step applies whenever step 5 wrote or rewrote specs; leave tasks already in `docs/tasks/` as they are.
+
+1. Work out the units of work behind the specs: one task per feature, or per spec area when the area is a single feature. Show the user the proposed list, one line each, and adjust it to their feedback.
+2. Call the Skill tool with "write-task" and write each task in `docs/tasks/` with `status: done`. Describe the work as it was delivered, from the code and the specs: problem, solution, user stories, decisions, and acceptance criteria all ticked. Skip the seams discussion with the user and the specs update, since the specs are already written; link the specs in the Specs section.
+3. When rewriting per-feature documents, PRDs or ADRs from another format, build each task from the original document, keeping its user stories and acceptance criteria.
+4. Do not invent history: where the code doesn't show why something was built, say less rather than guess, and collect the question for the final report.
+5. On a large codebase, hand tasks to parallel sub-agents, giving each one its feature, the path to the `write-task` skill, the matching specs, and `docs/CONTEXT.md`.
+
+## 7. Manual
+
+The manual comes after the specs and tasks, since it is written from them.
 
 - **No manual, and the project has specs** (written in step 5 or already present): offer to write it. If the user agrees, call the Skill tool with "write-docs" and follow it. Otherwise leave `docs/manual/` with its `.gitkeep`.
 - **New project with no specs yet**: leave `docs/manual/` empty.
 - **Manual in `docs/manual/`**: leave it as it is, and report any disagreement with the specs or the code you notice along the way.
 - **User documentation elsewhere**: show the user what you found and ask whether to move it into `docs/manual/`. Do not rewrite or delete the originals without asking.
 
-## 7. Report
+## 8. Report
 
-Summarise what was created and updated, the specs written, the manual status, the glossary conflicts found, and the open questions collected along the way.
+Summarise what was created and updated, the specs and done tasks written, the manual status, the glossary conflicts found, and the open questions collected along the way.
