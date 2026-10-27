@@ -1,7 +1,6 @@
 ---
 name: implement
 description: "Implement a piece of work based on a task in docs/tasks, or on the plan agreed in the conversation."
-disable-model-invocation: true
 ---
 
 Implement the work described by the user: a task in `docs/tasks/`, or the plan agreed in the conversation.
