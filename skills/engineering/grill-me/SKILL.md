@@ -4,6 +4,6 @@ description: A relentless interview to sharpen a plan or design, which ends by o
 disable-model-invocation: true
 ---
 
-Call the Skill tool with "grilling".
+Call the Skill tool twice, for "grilling" and "domain-modeling".
 
-Once we have reached a shared understanding, ask me whether to write a task with "write-task" skill, or to implement the plan directly with "implement" skill. Do neither until I choose.
+Once we have reached a shared understanding, ask me whether to write a task with "write-task" skill, or to implement the plan directly with "implement" skill.

@@ -11,6 +11,8 @@ Write one task per user request, even a large one: a task can cover a whole feat
 
 ## Process
 
+0. If the work has not been discussed with the user yet in this conversation, call the Skill tool twice, for "grilling" and "domain-modeling", and only continue once we have reached a shared understanding.
+
 1. Explore the repo to understand the current state of the codebase, if you haven't already. Read `docs/CONTEXT.md` and the specs in `docs/specs/` for the areas the work touches, and use the glossary vocabulary throughout the task.
 
 2. Sketch out the seams at which you're going to test the work. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.

@@ -1,5 +1,0 @@
-interface:
-  display_name: "Grill with Task"
-  short_description: "Grill a design, then write its task and specs"
-policy:
-  allow_implicit_invocation: false
