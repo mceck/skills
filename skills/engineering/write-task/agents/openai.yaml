@@ -1,0 +1,3 @@
+interface:
+  display_name: "Write Task"
+  short_description: "Write a detailed task in docs/tasks"

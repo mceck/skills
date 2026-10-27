@@ -1,0 +1,5 @@
+interface:
+  display_name: "Init Workflow"
+  short_description: "Set up specs, tasks and glossary in a repo"
+policy:
+  allow_implicit_invocation: false

@@ -1,5 +1,5 @@
 interface:
   display_name: "Implement"
-  short_description: "Implement a piece of work based on a spec"
+  short_description: "Implement a task and keep the specs current"
 policy:
   allow_implicit_invocation: false

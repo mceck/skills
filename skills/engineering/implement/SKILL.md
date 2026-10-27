@@ -1,13 +1,23 @@
 ---
 name: implement
-description: "Implement a piece of work based on a spec."
+description: "Implement a piece of work based on a task in docs/tasks, or on the plan agreed in the conversation."
 disable-model-invocation: true
 ---
 
-Implement the work described by the user in the spec.
-Then write tests to validate the implementation.
+Implement the work described by the user: a task in `docs/tasks/`, or the plan agreed in the conversation.
 
-Run typechecking regularly, single test files regularly, and the full test suite once at the end.
+When working from a task, set its `status` to `in-progress` before starting, and read the specs it links.
 
-Once done, use /code-review to review the work.
-Ask the user if they want to run /security-review, if relevant.
+Call the Skill tool with "tdd" where possible, at pre-agreed seams. A task's Testing Decisions are pre-agreed seams.
+
+Run typechecking regularly, single test files regularly, don't run the full test suite while implementing.
+
+Call the Skill tool with "write-spec" to bring `docs/specs/` in line with what was built, including any decision that changed along the way.
+
+Once done, call the Skill tool with "task-review" to review the work, fix the issues found and then run the full test suite.
+
+When working from a task, tick its acceptance criteria and set its `status` to `done`.
+
+Commit your work to the current branch.
+
+If the work changed something the application's users see, ask the user whether to update the manual in `docs/manual/`. If they agree, call the Skill tool with "spec-to-docs" and commit the manual update as well.

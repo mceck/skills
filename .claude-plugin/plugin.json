@@ -1,7 +1,7 @@
 {
   "name": "mceck-skills",
   "version": "1.2.4",
-  "description": "Mattia Cecchini's agent skills for real engineering: grilling, spec/ticket flows, TDD, code review, domain modelling and more. Plug-and-play, not vibe coding.",
+  "description": "Mattia Cecchini's agent skills for real engineering: grilling, spec/task flows, TDD, code review, domain modelling and more. Plug-and-play, not vibe coding.",
   "author": {
     "name": "Mattia Cecchini",
     "url": "https://github.com/mceck"
@@ -13,16 +13,18 @@
     "engineering",
     "skills",
     "grilling",
-    "domain-modeling",
-    "productivity"
+    "domain-modeling"
   ],
   "skills": [
-    "./skills/engineering/grill-with-docs",
-    "./skills/engineering/to-spec",
-    "./skills/engineering/plan-task",
+    "./skills/engineering/init-workflow",
+    "./skills/engineering/write-spec",
+    "./skills/engineering/write-task",
+    "./skills/engineering/grill-with-task",
     "./skills/engineering/implement",
+    "./skills/engineering/tdd",
+    "./skills/engineering/task-review",
+    "./skills/engineering/spec-to-docs",
     "./skills/engineering/domain-modeling",
-    "./skills/productivity/grill-me",
-    "./skills/productivity/grilling"
+    "./skills/engineering/grill-me"
   ]
 }

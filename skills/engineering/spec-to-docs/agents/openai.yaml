@@ -1,0 +1,3 @@
+interface:
+  display_name: "Spec to Docs"
+  short_description: "Write the application manual from specs and code"
