@@ -17,8 +17,6 @@ Write one task per user request, even a large one: a task can cover a whole feat
 
 2. Sketch out the seams at which you're going to test the work. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
 
-Check with the user that these seams match their expectations.
-
 3. The task should be comprehensive and cover every aspect of the work. It should be written so that a developer can implement it without needing to ask any questions. If there are any ambiguities, clarify them with the user before writing the task.
 
 4. Write the task to `docs/tasks/YYYY-MM-DD-<slug>.md` (today's date, kebab-case title) using the template below, with `status: to-do`.
