@@ -13,19 +13,19 @@ Specs live in `docs/specs/`, one file per area, named after the area in kebab-ca
 
 An area is a part of the system broad enough to deserve its own document: a domain (billing, catalogue), a cross-cutting capability (authentication, search), or a major component (the sync engine, the public API).
 
-- A change to an existing area updates that area's spec.
+- A change to an existing area updates that area's spec. A single change often touches several areas: update every affected spec, and create new ones where needed, all in the same change.
 - A new spec is created when the work introduces an area that no existing spec covers and that is broad enough to stand on its own. A smaller addition becomes a new section in the closest spec.
 - A spec that has grown to cover several unrelated concerns is split into one spec per concern, with links between them.
 
 ## Process
 
 1. Read `docs/CONTEXT.md` and list `docs/specs/`. Read the specs of the areas the change touches, and the code where the spec and the change need checking against reality.
-2. Map the change to areas: decide which specs it affects, and whether it needs a new one.
+2. Map the change to areas: decide which specs it affects (often more than one), and which new ones it needs. Work through every affected spec, editing existing ones and adding new ones as required.
 3. Edit in place. Rewrite the sections the change touches so each spec reads as one coherent description of the current system. Superseded statements are replaced, so the text always states the current truth; git keeps the history.
 4. Record every architectural decision the change makes in the spec's Decisions section, with its rationale.
 5. When a behaviour or decision is still open, ask the user before writing it down.
 6. Use the glossary terms from `docs/CONTEXT.md` throughout. A new domain term goes into `docs/CONTEXT.md` (see the `domain-modeling` skill).
-7. Link related specs to each other.
+7. Link related specs to each other, including the ones touched by the same change.
 
 ## What belongs in a spec
 

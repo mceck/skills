@@ -20,4 +20,4 @@ When working from a task, tick its acceptance criteria and set its `status` to `
 
 Commit your work to the current branch.
 
-If the work changed something the application's users see, ask the user whether to update the manual in `docs/manual/`. If they agree, call the Skill tool with "spec-to-docs" and commit the manual update as well.
+If the work changed something the application's users see, ask the user whether to update the manual in `docs/manual/`. If they agree, call the Skill tool with "write-docs" and commit the manual update as well.

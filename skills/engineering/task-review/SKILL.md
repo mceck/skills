@@ -18,7 +18,15 @@ Whatever the user said is the fixed point (a commit SHA, branch name, tag, `main
 
 Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
 
-Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
+Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`). A bad ref should fail here, not inside two parallel sub-agents.
+
+Then check for uncommitted work with `git status --porcelain` (staged, unstaged and untracked files). The three-dot diff above only sees commits, so if there is any, tell the user which files are affected and ask what to do:
+
+- **Commit first**: commit the changes (ask for the message if it isn't obvious), then continue with the diff above.
+- **Include without committing**: review the working tree too. Use `git diff $(git merge-base <fixed-point> HEAD)` as the diff command, which covers committed, staged and unstaged changes, and give the sub-agents the list of untracked files to read in full.
+- **Ignore**: review the commits only, and note in the final report that uncommitted changes were left out.
+
+Finally confirm the diff is non-empty, counting the uncommitted changes when they are included.
 
 ### 2. Identify the task and the specs
 

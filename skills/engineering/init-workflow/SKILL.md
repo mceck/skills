@@ -1,13 +1,14 @@
 ---
 name: init-workflow
-description: Set up a repository for the spec/task workflow, creating docs/specs, docs/tasks, docs/CONTEXT.md and the agent instructions. On an existing project, derives the specs and glossary from the code.
+description: Set up a repository for the spec/task workflow, creating docs/specs, docs/tasks, docs/manual, docs/CONTEXT.md and the agent instructions. On an existing project, derives the specs and glossary from the code.
 disable-model-invocation: true
 ---
 
-Prepare this repository for the spec/task workflow, which keeps three kinds of documents:
+Prepare this repository for the spec/task workflow, which keeps four kinds of documents:
 
 - `docs/specs/`: the living specs, one per area of the system (see the `write-spec` skill).
 - `docs/tasks/`: one task per unit of work, with its status (see the `write-task` skill).
+- `docs/manual/`: the user manual, written for the people who use the application (see the `write-docs` skill).
 - `docs/CONTEXT.md`: the domain glossary (see the `domain-modeling` skill).
 
 Inspect what exists before writing anything, and fill only the gaps: running this again on a set-up repository updates what is there and leaves the rest as it is.
@@ -20,10 +21,11 @@ Work out:
 - The stack, the package manager, and the commands to install, run, build, typecheck, lint and test (single file and full suite). Confirm each command exists (package scripts, Makefile, task runner) before relying on it.
 - The agent instructions files at the root: `AGENTS.md`, `CLAUDE.md`.
 - Existing documentation that plays the role of specs, tasks, decisions or glossary: `docs/specs/`, `docs/spec/`, `specs/`, `docs/adr/`, a root `CONTEXT.md`, design documents, PRDs, feature write-ups.
+- Existing user documentation: `docs/manual/`, `docs/manual.md`, a `docs/` or wiki folder of usage guides, a README with usage instructions.
 
 ## 2. Create the folders
 
-Create `docs/specs/` and `docs/tasks/` when missing, each with a `.gitkeep` so git tracks it while it is empty.
+Create `docs/specs/`, `docs/tasks/` and `docs/manual/` when missing, each with a `.gitkeep` so git tracks it while it is empty.
 
 ## 3. Agent instructions
 
@@ -52,7 +54,8 @@ This project is developed spec-first with the `write-spec`, `write-task`, `grill
 
 - `docs/specs/`: living specs, one per area of the system, describing in detail what it does and the architectural decisions behind it. Every change to behaviour or architecture updates the affected specs in the same change, using the `write-spec` skill.
 - `docs/tasks/`: one file per unit of work. Keep the `status` in its frontmatter (`to-do`, `in-progress`, `done`) current while working on it.
-- `docs/CONTEXT.md`: the domain glossary. Use its terms in code, specs and tasks.
+- `docs/manual/`: the user manual, linked pages with an index, written for the people who use the application. When a change alters what users see or do, update the affected pages using the `write-docs` skill.
+- `docs/CONTEXT.md`: the domain glossary. Use its terms in code, specs, tasks and the manual.
 ```
 
 ## 4. Glossary
@@ -86,6 +89,15 @@ If they decline, leave the existing documents as they are; new specs go to `docs
 
 **Specs already in `docs/specs/` in this format.** Leave them as they are, and report any disagreement with the code you notice along the way.
 
-## 6. Report
+## 6. Manual
 
-Summarise what was created and updated, the specs written, the glossary conflicts found, and the open questions collected along the way.
+The manual comes after the specs, since it is written from them.
+
+- **No manual, and the project has specs** (written in step 5 or already present): offer to write it. If the user agrees, call the Skill tool with "write-docs" and follow it. Otherwise leave `docs/manual/` with its `.gitkeep`.
+- **New project with no specs yet**: leave `docs/manual/` empty.
+- **Manual in `docs/manual/`**: leave it as it is, and report any disagreement with the specs or the code you notice along the way.
+- **User documentation elsewhere**: show the user what you found and ask whether to move it into `docs/manual/`. Do not rewrite or delete the originals without asking.
+
+## 7. Report
+
+Summarise what was created and updated, the specs written, the manual status, the glossary conflicts found, and the open questions collected along the way.

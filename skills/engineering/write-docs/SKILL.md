@@ -1,5 +1,5 @@
 ---
-name: spec-to-docs
+name: write-docs
 description: Create or update the application's manual in docs/manual from the specs and the code. Markdown pages linked together, with an index page, screenshots and diagrams, written for the people who use the application. Use when the user asks to write or update the manual or the user documentation.
 ---
 
