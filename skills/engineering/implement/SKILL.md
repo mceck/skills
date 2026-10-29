@@ -1,6 +1,6 @@
 ---
 name: implement
-description: "Implement a piece of work based on a task in docs/tasks, or on the plan agreed in the conversation."
+description: "Implement work based on a task in docs/tasks. Do not trigger this for every user implementation request, only for tasks in docs/tasks or when explicitly requested by the user."
 ---
 
 Implement the work described by the user: a task in `docs/tasks/`, or the plan agreed in the conversation.
