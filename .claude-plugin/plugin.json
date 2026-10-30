@@ -19,13 +19,13 @@
     "./skills/engineering/init-workflow",
     "./skills/engineering/write-spec",
     "./skills/engineering/write-task",
-    "./skills/engineering/grill-with-task",
     "./skills/engineering/implement",
     "./skills/engineering/tdd",
     "./skills/engineering/task-review",
     "./skills/engineering/write-docs",
     "./skills/engineering/domain-modeling",
     "./skills/engineering/grilling",
-    "./skills/engineering/grill-me"
+    "./skills/engineering/grill-me",
+    "./skills/monade/monade-manutenzione"
   ]
 }
