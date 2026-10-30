@@ -43,6 +43,7 @@ See [example.md](example.md) for a complete task written with this template.
 
 ---
 status: to-do
+depends_on: [other-task.md]
 ---
 
 # {Task title}

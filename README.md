@@ -14,7 +14,7 @@ The marketplace lists two independent plugins. Install either one or both.
 
 ## What is inside
 
-- **mceck-skills**: agent skills for real engineering — `init-workflow`, `write-spec`, `write-task`, `implement`, `tdd`, `task-review`, `write-docs`, `domain-modeling`, `grilling`, `grill-me`, `monade-manutenzione`.
+- **mceck-skills**: agent skills for real engineering — `init-workflow`, `write-spec`, `write-task`, `implement`, `tdd`, `task-review`, `find-bugs`, `security-check`, `write-docs`, `domain-modeling`, `grilling`, `grill-me`, `monade-manutenzione`.
 - **sidebar**: a pane showing chat title, context usage and cost, working-tree changes, commits, MCP servers and skills used. It opens at session start; toggle it with `/sidebar`.
 
 ## Local development

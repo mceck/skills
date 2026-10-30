@@ -9,7 +9,7 @@ If there is no task and the work has not been discussed with the user yet in thi
 
 When working from a task, set its `status` to `in-progress` before starting, and read the specs it links.
 
-Call the Skill tool with "tdd" where possible, at pre-agreed seams. A task's Testing Decisions are pre-agreed seams.
+Call the Skill tool with "tdd" where possible. When working from a task, test at the seams in its Testing Decisions.
 
 Run typechecking regularly, single test files regularly, don't run the full test suite while implementing.
 

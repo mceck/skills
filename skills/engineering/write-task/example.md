@@ -5,6 +5,7 @@
 ```md
 ---
 status: to-do
+depends_on: [2026-03-13-bootstrap-app.md]
 ---
 
 # Magic-link sign-in

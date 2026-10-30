@@ -1,0 +1,5 @@
+interface:
+  display_name: "Security Check"
+  short_description: "Find, confirm and fix security vulnerabilities"
+policy:
+  allow_implicit_invocation: false

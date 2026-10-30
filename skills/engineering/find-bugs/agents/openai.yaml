@@ -1,0 +1,5 @@
+interface:
+  display_name: "Find Bugs"
+  short_description: "Hunt bugs section by section, test and fix them"
+policy:
+  allow_implicit_invocation: false
