@@ -4,7 +4,7 @@
     "name": "Mattia Cecchini",
     "url": "https://github.com/mceck"
   },
-  "description": "Mattia Cecchini's skills for real engineering, as an installable Claude Code plugin.",
+  "description": "Mattia Cecchini's Claude Code plugins: engineering skills and a live sidebar.",
   "plugins": [
     {
       "name": "mceck-skills",
@@ -15,6 +15,17 @@
         "engineering",
         "skills",
         "grilling"
+      ]
+    },
+    {
+      "name": "sidebar",
+      "source": "./plugins/sidebar",
+      "description": "Sidebar pane: chat title, context usage, git changes, commits, MCP servers and skills.",
+      "category": "productivity",
+      "keywords": [
+        "sidebar",
+        "ui",
+        "productivity"
       ]
     }
   ]

@@ -1,0 +1,11 @@
+{
+  "name": "sidebar",
+  "version": "0.1.0",
+  "description": "Sidebar pane: chat title, context usage, git changes, commits, MCP servers and skills",
+  "author": {
+    "name": "Mattia Cecchini",
+    "url": "https://github.com/mceck"
+  },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
