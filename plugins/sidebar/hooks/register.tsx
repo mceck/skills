@@ -81,6 +81,13 @@ function formatTokens(tokens: number): string {
   return `${tokens}`
 }
 
+// A skill can arrive as `plugin:name` or `name`, with a leading slash or a
+// different case, depending on who invoked it; compare on the bare name.
+function skillKey(name: string): string {
+  const bare = name.trim().replace(/^\//, '')
+  return (bare.includes(':') ? bare.slice(bare.lastIndexOf(':') + 1) : bare).toLowerCase()
+}
+
 function parseStatus(raw: string): ChangeRow[] {
   const tokens = raw.split('\0')
   const rows: ChangeRow[] = []
@@ -382,7 +389,7 @@ export const register: Register = on => {
     const cellWidth =
       gridColumns === 1 ? width : Math.floor((width - 1) / gridColumns)
     const gridLimit = 3 * gridColumns
-    const usedSet = new Set(used)
+    const usedSet = new Set(used.map(skillKey))
 
     const filledCells = Math.max(
       0,
@@ -456,7 +463,7 @@ export const register: Register = on => {
     const mcpShown = mcp.isExpanded ? mcpItems : mcpItems.slice(0, gridLimit)
 
     const skillItems = skills.names
-      .map(name => ({ key: name, isOn: usedSet.has(name), label: name }))
+      .map(name => ({ key: name, isOn: usedSet.has(skillKey(name)), label: name }))
       .sort((a, b) => Number(b.isOn) - Number(a.isOn))
     const skillShown = skills.isExpanded
       ? skillItems
