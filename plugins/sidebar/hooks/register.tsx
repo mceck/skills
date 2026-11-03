@@ -129,6 +129,13 @@ function parseLog(raw: string): CommitRow[] {
   return commits
 }
 
+async function markUsed($: any, name: string): Promise<void> {
+  if (!name) return
+  await update($, usedSkillsAtom, list =>
+    list.includes(name) ? list : [...list, name],
+  )
+}
+
 async function refreshUsage($: any): Promise<void> {
   if (isRefreshingUsage) return
   isRefreshingUsage = true
@@ -319,13 +326,18 @@ export const register: Register = on => {
     return next(e)
   })
 
+  // `skill.prompt` can be bypassed by a plugin that runs above this one
+  // (cc-plugin-sec-default), so a skill is also noted from the two places
+  // that cannot be: the Skill tool the model calls, and a typed `/name`.
   on('skill.prompt', async ($, e, next) => {
-    const name = e.skill
-    await update($, usedSkillsAtom, list =>
-      list.includes(name) ? list : [...list, name],
-    )
+    await markUsed($, e.skill)
     return next(e)
   })
+
+  on('tool.call', { tool: 'Skill' }, async ($, e, next) => {
+    await markUsed($, (e as { skill?: string }).skill ?? '')
+    return next(e)
+  }).catch(($, e, next) => next(e))
 
   on('ui.message', { element: 'changes-list' }, async ($, e, next) => {
     const data = e.data as { open?: unknown } | null
@@ -346,6 +358,7 @@ export const register: Register = on => {
   })
 
   on('prompt.submit', async ($, e, next) => {
+    if (e.command) await markUsed($, e.command.name)
     if (!hasSessionTitle && !e.command && e.text.trim()) {
       const short = e.text.trim().replace(/\s+/g, ' ').slice(0, 60)
       await update($, titleAtom, current => (current === 'Chat' ? short : current))
