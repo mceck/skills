@@ -72,7 +72,6 @@ const sectionsAtom = atom(
 let timer: { cancel: () => void } | null = null
 let isRefreshingGit = false
 let isRefreshingUsage = false
-let hasSessionTitle = false
 let repoRoot = ''
 
 function formatTokens(tokens: number): string {
@@ -359,25 +358,9 @@ export const register: Register = on => {
 
   on('prompt.submit', async ($, e, next) => {
     if (e.command) await markUsed($, e.command.name)
-    if (!hasSessionTitle && !e.command && e.text.trim()) {
+    if (!e.command && e.text.trim()) {
       const short = e.text.trim().replace(/\s+/g, ' ').slice(0, 60)
       await update($, titleAtom, current => (current === 'Chat' ? short : current))
-    }
-    return next(e)
-  }).catch(($, e, next) => next(e))
-
-  on('classic.SessionStart', async ($, e, next) => {
-    if (e.session_title) {
-      hasSessionTitle = true
-      await update($, titleAtom, () => e.session_title as string)
-    }
-    return next(e)
-  }).catch(($, e, next) => next(e))
-
-  on('classic.UserPromptSubmit', async ($, e, next) => {
-    if (e.session_title) {
-      hasSessionTitle = true
-      await update($, titleAtom, () => e.session_title as string)
     }
     return next(e)
   }).catch(($, e, next) => next(e))
