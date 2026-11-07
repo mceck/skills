@@ -9,7 +9,7 @@ Actively build and sharpen the project's domain model as you design. This is the
 
 The glossary always lives in `docs/CONTEXT.md`, one file for the whole repository. Create it lazily: when the first term is resolved.
 
-The glossary must be written in English unless specified otherwise. However, to make it multilingual, translate only the terms into the users' native languages, keeping the descriptions in English.
+The glossary must be written in English unless specified otherwise. However, to make it multilingual, translate only the terms into the users' native languages (only if they are different from english), keeping the descriptions in English.
 
 ## During the session
 
