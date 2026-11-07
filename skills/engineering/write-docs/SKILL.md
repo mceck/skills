@@ -5,6 +5,9 @@ description: Create or update the application's manual in docs/manual from the s
 
 Write the manual of the application in `docs/manual/`: a set of Markdown pages linked together, starting from an index, that lets someone who has never seen the application learn to use it and find any answer quickly. If the manual already exists, bring it up to date.
 
+The manual should be written in english unless another language is explicitly requested.
+
+
 ## Who the manual is for
 
 The manual is for the people who use the application, not for the people who build it (they have the specs and `AGENTS.md`). Work out who they are from the specs and the code: end users and administrators for an application with a UI, integrators for an API, operators for a CLI or a service. When the application has several kinds of users, give each one a clear path through the manual.

@@ -7,6 +7,8 @@ A spec describes in detail what one area of the system does and the architectura
 
 Specs are living documents. They describe the system as it is (or as the task being written will make it), and they are updated as the system changes, never rewritten from scratch per feature.
 
+Specs should be written in english unless another language is explicitly requested.
+
 ## Where specs live
 
 Specs live in `docs/specs/`, one file per area, named after the area in kebab-case: `authentication.md`, `billing.md`, `notifications.md`.

@@ -11,14 +11,17 @@
 
 **Order**:
 {A one or two sentence description of the term}
+_Translations_: Ordine
 _Avoid_: Purchase, transaction
 
 **Invoice**:
 A request for payment sent to a customer after delivery.
+_Translations_: Fattura
 _Avoid_: Bill, payment request
 
 **Customer**:
 A person or organization that places orders.
+_Translations_: Cliente
 _Avoid_: Client, buyer, account
 ```
 
