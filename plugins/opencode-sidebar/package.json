@@ -5,8 +5,5 @@
   "type": "module",
   "exports": {
     "./tui": "./tui.js"
-  },
-  "scripts": {
-    "build": "npx -y esbuild tui.tsx --format=esm --jsx=automatic --jsx-import-source=@opentui/solid --target=es2022 --outfile=tui.js"
   }
 }

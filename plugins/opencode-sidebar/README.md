@@ -43,7 +43,8 @@ files installed under `node_modules`, so build the entrypoint before
 installing or updating the plugin:
 
 ```sh
-npm run build
+npx -y esbuild tui.tsx --format=esm --jsx=automatic \
+  --jsx-import-source=@opentui/solid --target=es2022 --outfile=tui.js
 opencode reload
 ```
 
