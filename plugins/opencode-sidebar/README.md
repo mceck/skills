@@ -38,10 +38,14 @@ OpenCode resolves `@opencode/plugin/tui` at runtime, so the plugin needs no
 
 ## Development
 
-Edit `tui.tsx` and reload the configuration:
+`tui.tsx` is the source. OpenCode does not run the Solid JSX transform on
+files installed under `node_modules`, so build the entrypoint before
+installing or updating the plugin:
 
 ```sh
+npm run build
 opencode reload
 ```
 
-The plugin entrypoint is the `./tui` export in `package.json`.
+The plugin entrypoint is the `./tui` export in `package.json`, which points to
+the generated `tui.js`.
