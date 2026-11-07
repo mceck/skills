@@ -43,10 +43,13 @@ files installed under `node_modules`, so build the entrypoint before
 installing or updating the plugin:
 
 ```sh
-npx -y esbuild tui.tsx --format=esm --jsx=automatic \
-  --jsx-import-source=@opentui/solid --target=es2022 --outfile=tui.js
+npm install --no-save --package-lock=false @opentui/solid@0.6.8
+node build.mjs
 opencode reload
 ```
+
+The build uses the same Solid transform as OpenCode; a plain esbuild/React
+transform would leave `Show`/`For` non-reactive.
 
 The plugin entrypoint is the `./tui` export in `package.json`, which points to
 the generated `tui.js`.
