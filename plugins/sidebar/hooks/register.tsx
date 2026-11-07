@@ -8,6 +8,7 @@ import type {
   ContextInfo,
   GitInfo,
   McpInfo,
+  ModelInfo,
   Sections,
   SkillsInfo,
 } from '../types'
@@ -26,6 +27,12 @@ const PANE_COLUMNS = 40
 const titleAtom = atom({ plugin: 'sidebar', key: 'title' } as const, 'Chat', {
   shape: 'title-1',
 })
+
+const modelAtom = atom(
+  { plugin: 'sidebar', key: 'model' } as const,
+  { id: '', effort: null } as ModelInfo,
+  { shape: 'model-1' },
+)
 
 const contextAtom = atom(
   { plugin: 'sidebar', key: 'context' } as const,
@@ -78,6 +85,24 @@ function formatTokens(tokens: number): string {
   if (tokens >= 1_000_000) return `${(tokens / 1_000_000).toFixed(1)}M`
   if (tokens >= 1_000) return `${(tokens / 1_000).toFixed(1)}K`
   return `${tokens}`
+}
+
+// `claude-sonnet-5-5` -> `Sonnet 5.5`; an id that does not fit is shown as is.
+function modelLabel(id: string): string {
+  if (!id) return '—'
+  const match = id
+    .replace(/\[.*\]$/, '')
+    .match(/^(?:[a-z]+\.)?claude-([a-z]+)-(\d+(?:-\d+)?)(?:-\d{8})?$/)
+  if (match) {
+    const family = match[1][0].toUpperCase() + match[1].slice(1)
+    return `${family} ${match[2].replace('-', '.')}`
+  }
+  const legacy = id.match(/^claude-(\d+)(?:-(\d+))?-([a-z]+)/)
+  if (legacy) {
+    const family = legacy[3][0].toUpperCase() + legacy[3].slice(1)
+    return `${family} ${legacy[1]}${legacy[2] ? `.${legacy[2]}` : ''}`
+  }
+  return id
 }
 
 // A skill can arrive as `plugin:name` or `name`, with a leading slash or a
@@ -140,6 +165,9 @@ async function refreshUsage($: any): Promise<void> {
   isRefreshingUsage = true
 
   try {
+    const id = await $.session.model()
+    if (id) await update($, modelAtom, state => (state.id === id ? state : { ...state, id }))
+
     const usage = await $.session.usage({ breakdown: 'summary', columns: 80 })
     const context = usage.context
 
@@ -320,19 +348,31 @@ export const register: Register = on => {
     return next(e)
   })
 
+  // The step names the model and effort the request actually uses.
+  on('turn.step', async function* ($, e, next) {
+    if (e.agentId === undefined) {
+      const effort = e.effort === undefined ? null : String(e.effort)
+      try {
+        await update($, modelAtom, state =>
+          state.id === e.model && state.effort === effort
+            ? state
+            : { id: e.model, effort },
+        )
+      } catch {
+        // Display only: never block the request.
+      }
+    }
+    return yield* next(e)
+  })
+
   on('turn.complete', async ($, e, next) => {
     void refreshGit($)
     return next(e)
   })
 
-  // `skill.prompt` can be bypassed by a plugin that runs above this one
-  // (cc-plugin-sec-default), so a skill is also noted from the two places
-  // that cannot be: the Skill tool the model calls, and a typed `/name`.
-  on('skill.prompt', async ($, e, next) => {
-    await markUsed($, e.skill)
-    return next(e)
-  })
-
+  // No `skill.prompt` hook: the plugin above this one (cc-plugin-sec-default)
+  // sends that event past it and the engine reports "hook was skipped". A
+  // skill is noted from the Skill tool the model calls and from a typed `/name`.
   on('tool.call', { tool: 'Skill' }, async ($, e, next) => {
     await markUsed($, (e as { skill?: string }).skill ?? '')
     return next(e)
@@ -368,9 +408,10 @@ export const register: Register = on => {
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     const { Box, Text, Button, Client } = $.ui.resolve(e)
 
-    const [title, context, changes, git, mcp, skills, used, sections] =
+    const [title, model, context, changes, git, mcp, skills, used, sections] =
       await Promise.all([
         read($, titleAtom),
+        read($, modelAtom),
         read($, contextAtom),
         read($, changesAtom),
         read($, gitAtom),
@@ -398,6 +439,10 @@ export const register: Register = on => {
     const contextCost =
       context.usd === null ? '' : ` $${context.usd.toFixed(2)}`
     const contextLine = `Context: ${contextTokens} tokens${contextCost}`
+
+    const modelLine = model.effort
+      ? `${modelLabel(model.id)} (${model.effort})`
+      : modelLabel(model.id)
 
     const hint =
       changes.rows.length > 0
@@ -476,6 +521,10 @@ export const register: Register = on => {
       <Box flexDirection="column" paddingX={1}>
         <Text bold wrap="truncate-end">
           {title || 'Chat'}
+        </Text>
+
+        <Text dimColor wrap="truncate-end">
+          {modelLine}
         </Text>
 
         <Text dimColor>{contextLine}</Text>

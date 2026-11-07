@@ -16,6 +16,11 @@ export type ContextInfo = {
   usd: number | null
 }
 
+export type ModelInfo = {
+  id: string
+  effort: string | null
+}
+
 export type ChangesInfo = {
   rows: ChangeRow[]
   isExpanded: boolean
@@ -56,6 +61,7 @@ declare module 'claude-code' {
   interface PluginState {
     sidebar: {
       title: Shaped<string>
+      model: Shaped<ModelInfo>
       context: Shaped<ContextInfo>
       changes: Shaped<ChangesInfo>
       git: Shaped<GitInfo>
