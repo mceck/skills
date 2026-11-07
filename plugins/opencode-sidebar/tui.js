@@ -1,6 +1,7 @@
 import { jsx, jsxs } from "@opentui/solid/jsx-runtime";
 import { Plugin, usePlugin } from "@opencode/plugin/tui";
 import { spawn } from "node:child_process";
+import { appendFileSync } from "node:fs";
 import { For, Show, createEffect, createMemo, createSignal, onCleanup, onMount } from "solid-js";
 const MONEY = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 const MAX_CHANGES = 12;
@@ -8,6 +9,16 @@ const MAX_SKILL_ROWS = 3;
 const MAX_MCP_ROWS = 3;
 const MAX_COMMITS = 10;
 const COMMIT_STEP = 10;
+function debug(...args) {
+  try {
+    appendFileSync(
+      "/private/var/folders/wl/w51s1qts5n1f6kq31bb3w_g00000gn/T/opencode/sidebar-debug.log",
+      `${(/* @__PURE__ */ new Date()).toISOString()} ${args.map((value) => typeof value === "string" ? value : JSON.stringify(value)).join(" ")}
+`
+    );
+  } catch {
+  }
+}
 function formatTokens(tokens) {
   if (tokens >= 999950) return `${(tokens / 1e6).toFixed(1)}M`;
   if (tokens >= 1e3) return `${(tokens / 1e3).toFixed(1)}K`;
@@ -174,7 +185,8 @@ async function loadGit(cwd, limit) {
       };
     });
     return { branch, commits, hasMore: commits.length > limit };
-  } catch {
+  } catch (error) {
+    debug("loadGit failed", cwd, String(error));
     return void 0;
   }
 }
@@ -182,9 +194,11 @@ function Sidebar(props) {
   const context = usePlugin();
   const theme = context.theme;
   const session = createMemo(() => context.data.session.get(props.sessionID));
-  const directory = createMemo(
-    () => session()?.location.directory ?? context.location?.directory ?? context.data.location.default().directory
-  );
+  const directory = createMemo(() => {
+    const value = session()?.location.directory ?? context.location?.directory ?? context.data.location.default().directory;
+    debug("directory", value, "sessionLocation", session()?.location, "contextLocation", context.location);
+    return value;
+  });
   const usage = createMemo(() => {
     const messages = context.data.session.message.list(props.sessionID);
     const last = lastAssistantWithUsage(messages, session()?.revert?.messageID);
@@ -391,8 +405,9 @@ function Sidebar(props) {
           location: { directory: directory() }
         });
         if (!disposed) setChanges(result.data);
-      } catch {
+      } catch (error) {
         if (!disposed) setChanges([]);
+        debug("vcs.status failed", directory(), String(error));
       } finally {
         refreshing = false;
       }
@@ -842,7 +857,7 @@ function Sidebar(props) {
   ] });
 }
 var tui_default = Plugin.define({
-  id: "sidebar.plus",
+  id: "sidebar.plus.debug",
   setup(context) {
     return context.ui.slot({
       append: "sidebar.content",
