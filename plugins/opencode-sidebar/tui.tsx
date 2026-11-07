@@ -489,6 +489,7 @@ function Sidebar(props: { sessionID: string }) {
     const request = ++gitRequest
     const state = await loadGit(directory(), commitLimit())
     if (request !== gitRequest) return
+    debug("git", directory(), JSON.stringify(state))
     setGit(state)
   }
 
@@ -515,6 +516,7 @@ function Sidebar(props: { sessionID: string }) {
         const result = await context.client.vcs.status({
           location: { directory: directory() },
         })
+        debug("vcs.status", directory(), JSON.stringify(result))
         if (!disposed) setChanges(result.data)
       } catch (error) {
         if (!disposed) setChanges([])
@@ -1051,7 +1053,7 @@ function Sidebar(props: { sessionID: string }) {
 }
 
 export default Plugin.define({
-  id: "sidebar.plus.debug",
+  id: "sidebar.plus.debug2",
   setup(context) {
     return context.ui.slot({
       append: "sidebar.content",
