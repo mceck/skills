@@ -1,6 +1,6 @@
 {
   "name": "sidebar",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Sidebar pane: chat title, context usage, git changes, commits, MCP servers and skills",
   "author": {
     "name": "Mattia Cecchini",

@@ -321,8 +321,23 @@ function Sidebar(props: { sessionID: string }) {
     initial: { open: true },
   })
 
+  // Connected first, then disabled, then waiting for sign-in, then failed.
+  const mcpRank = (server: McpServer) => {
+    switch (server.status.status) {
+      case "connected":
+        return 0
+      case "needs_auth":
+      case "needs_client_registration":
+        return 2
+      case "failed":
+        return 3
+      default:
+        return 1
+    }
+  }
+
   const mcpRows = createMemo(() => {
-    const list = mcp()
+    const list = [...mcp()].sort((left, right) => mcpRank(left) - mcpRank(right))
     const rows: McpServer[][] = []
     for (let index = 0; index < list.length; index += 2) {
       rows.push(list.slice(index, index + 2))
@@ -467,7 +482,7 @@ function Sidebar(props: { sessionID: string }) {
   const [gitMoreHovered, setGitMoreHovered] = createSignal(false)
   const [gitLessHovered, setGitLessHovered] = createSignal(false)
   const [gitView, updateGitView] = context.storage.store("git", {
-    initial: { open: true },
+    initial: { open: false },
   })
 
   let gitRequest = 0
@@ -624,7 +639,11 @@ function Sidebar(props: { sessionID: string }) {
   const mcpColor = (server: McpServer) => {
     if (server.status.status === "connected") return theme.text.feedback.success.base
     if (server.status.status === "failed") return theme.text.feedback.error.base
-    if (server.status.status === "needs_auth") return theme.text.feedback.warning.base
+    if (
+      server.status.status === "needs_auth" ||
+      server.status.status === "needs_client_registration"
+    )
+      return theme.text.feedback.warning.base
     return theme.text.muted
   }
 

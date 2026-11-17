@@ -72,8 +72,8 @@ const usedSkillsAtom = atom(
 
 const sectionsAtom = atom(
   { plugin: 'sidebar', key: 'sections' } as const,
-  { changes: true, git: true, mcp: true, skills: true } as Sections,
-  { shape: 'sections-1' },
+  { changes: true, git: false, mcp: true, skills: true } as Sections,
+  { shape: 'sections-2' },
 )
 
 let timer: { cancel: () => void } | null = null
