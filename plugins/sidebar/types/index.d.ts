@@ -36,6 +36,8 @@ export type GitInfo = {
 export type McpRow = {
   name: string
   isLoaded: boolean
+  /** Only the authenticate / complete_authentication pseudo-tools: not signed in. */
+  needsAuth: boolean
   tools: number
 }
 

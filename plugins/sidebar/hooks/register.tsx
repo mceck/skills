@@ -55,7 +55,7 @@ const gitAtom = atom(
 const mcpAtom = atom(
   { plugin: 'sidebar', key: 'mcp' } as const,
   { rows: [], isExpanded: false } as McpInfo,
-  { shape: 'mcp-1' },
+  { shape: 'mcp-2' },
 )
 
 const skillsAtom = atom(
@@ -180,11 +180,26 @@ async function refreshUsage($: any): Promise<void> {
     const breakdown = context.breakdown
     if (!breakdown) return
 
-    const servers = new Map<string, { tools: number; loaded: number }>()
+    // A claude.ai connector that is not signed in exposes only these two
+    // pseudo-tools, so a server with nothing else needs authentication.
+    const isAuthTool = (name: string) =>
+      /__(authenticate|complete_authentication)$/.test(name)
+
+    const servers = new Map<
+      string,
+      { tools: number; loaded: number; real: number }
+    >()
     for (const tool of breakdown.mcpTools) {
-      const entry = servers.get(tool.serverName) ?? { tools: 0, loaded: 0 }
+      const entry = servers.get(tool.serverName) ?? {
+        tools: 0,
+        loaded: 0,
+        real: 0,
+      }
       entry.tools += 1
-      if (tool.isLoaded) entry.loaded += 1
+      if (!isAuthTool(tool.name)) {
+        entry.real += 1
+        if (tool.isLoaded) entry.loaded += 1
+      }
       servers.set(tool.serverName, entry)
     }
 
@@ -193,6 +208,7 @@ async function refreshUsage($: any): Promise<void> {
       rows: [...servers.entries()].map(([name, entry]) => ({
         name,
         isLoaded: entry.loaded > 0,
+        needsAuth: entry.real === 0,
         tools: entry.tools,
       })),
     }))
@@ -457,7 +473,12 @@ export const register: Register = on => {
     }
 
     const grid = (
-      items: Array<{ key: string; isOn: boolean; label: string }>,
+      items: Array<{
+        key: string
+        isOn: boolean
+        isWarn?: boolean
+        label: string
+      }>,
       prefix: string,
     ) => {
       const out = []
@@ -475,7 +496,11 @@ export const register: Register = on => {
               width={cellWidth}
               flexDirection="row"
             >
-              <Text color={item.isOn ? 'success' : 'inactive'}>
+              <Text
+                color={
+                  item.isOn ? 'success' : item.isWarn ? 'warning' : 'inactive'
+                }
+              >
                 {item.isOn ? '●' : '○'}
               </Text>
               <Text dimColor={!item.isOn} wrap="truncate-end">
@@ -496,11 +521,17 @@ export const register: Register = on => {
       return out
     }
 
-    const mcpItems = mcp.rows.map(row => ({
-      key: row.name,
-      isOn: row.isLoaded,
-      label: row.name,
-    }))
+    // Loaded first, then usable but unused, then not signed in.
+    const mcpRank = (item: { isOn: boolean; isWarn: boolean }) =>
+      item.isOn ? 0 : item.isWarn ? 2 : 1
+    const mcpItems = mcp.rows
+      .map(row => ({
+        key: row.name,
+        isOn: row.isLoaded,
+        isWarn: row.needsAuth,
+        label: row.name,
+      }))
+      .sort((a, b) => mcpRank(a) - mcpRank(b))
     const mcpShown = mcp.isExpanded ? mcpItems : mcpItems.slice(0, gridLimit)
 
     const skillItems = skills.names
